@@ -1,0 +1,153 @@
+create database escolaDB;
+use escolaDB;
+
+create table alunos(
+    id_aluno int AUTO_INCREMENT PRIMARY KEY,
+    nome varchar(100),
+    cidade varchar(100),
+    idade int
+);
+
+create table cursos(
+    id_curso int AUTO_INCREMENT PRIMARY KEY,
+    nome_curso varchar(100),
+    carga_horaria int
+);
+
+create table matriculas(
+    id_matricula int AUTO_INCREMENT PRIMARY KEY,
+    id_aluno int,
+    id_curso int,
+    nota decimal(4,2),
+    faltas int,
+    Foreign Key (id_aluno) 
+    REFERENCES alunos(id_aluno),
+    Foreign Key (id_curso) 
+    REFERENCES cursos(id_curso)
+);
+
+INSERT INTO alunos (nome, cidade, idade)VALUES
+('Carlos','São Paulo',18),
+('Mariana','Curitiba',22),
+('João','Florianópolis',19),
+('Fernanda','São Paulo',25),
+('Lucas','Rio de Janeiro',20),
+('Patricia','Curitiba',21),
+('Ana','Porto Alegre',23),
+('Bruno','São Paulo',24);
+
+INSERT INTO cursos (nome_curso, carga_horaria)VALUES
+('Python',40),
+('Banco de Dados',60),
+('Java',80),
+('Data Science',100);
+
+INSERT INTO matriculas (id_aluno, id_curso, nota, faltas)VALUES
+(1,1,8.5,2),
+(1,2,7.0,5),
+(2,1,9.5,1),
+(2,4,8.0,4),
+(3,2,6.5,6),
+(3,3,7.5,3),
+(4,4,9.0,0),
+(5,1,5.5,10),
+(5,2,6.0,7),
+(6,3,8.5,2),
+(7,4,7.0,5),
+(8,2,9.5,1);
+
+-- 1 Liste todos os alunos cadastrados.
+SELECT * FROM alunos;
+-- 2 Liste apenas os nomes dos alunos.
+SELECT nome
+from alunos;
+-- 3. Exiba todos os cursos cadastrados.
+select nome_curso
+from cursos;
+-- 4. Mostre os alunos que moram em São Paulo.
+select nome
+from alunos
+where cidade = 'São Paulo';
+-- 5.Liste os alunos com idade maior que 20 anos.
+select nome 
+from alunos
+where idade > 20;
+-- 6. Exiba os cursos com carga horária maior que 50 horas.
+select nome_curso
+from cursos
+where carga_horaria > 50;
+-- 7. Mostre os alunos com idade entre 18 e 22 anos.
+select nome 
+from alunos
+where idade between 18 and 22;
+-- 8. Liste os alunos da cidade de Curitiba.
+select nome 
+from alunos
+where cidade = 'Curitiba';
+-- 9. Exiba os alunos cuja idade seja menor que 21 anos.
+select nome 
+from alunos
+where idade < 21;
+-- 10. Liste todas as matrículas cadastradas.
+select id_matricula
+from matriculas;
+
+
+-- INTERMEDIÁRIAS --
+
+
+-- 1. Mostre os alunos que possuem nota maior que 8.
+select A.nome, nota 
+from matriculas as M 
+join alunos as A on M.id_aluno = A.id_aluno
+where nota > 8;
+
+-- 2. Liste os alunos que tiveram mais de 5 faltas.
+select A.nome, C.nome_curso, faltas
+from matriculas as M 
+join alunos as A on M.id_aluno = A.id_aluno
+join cursos as C on M.id_curso = C.id_curso
+where faltas > 5;
+
+-- 3. Exiba os cursos com carga horária igual a 80 horas.
+select nome_curso
+from cursos
+where carga_horaria = 80;
+
+-- 4. Mostre os alunos que NÃO moram em São Paulo.
+select nome 
+from alunos
+where not(cidade) = 'São Paulo';
+
+-- 5. Liste os alunos cujo nome começa com a letra “A”.
+select nome 
+from alunos
+where nome LIKE'a%';
+
+-- 6. Exiba os alunos cujo nome termina com a letra “a”.
+select nome 
+from alunos
+where nome LIKE'%a';
+
+-- 7. Liste os cursos cujo nome contenha a palavra “Dados”.
+select nome_curso
+from cursos
+where nome_curso LIKE'%dados%'
+
+-- 8. Mostre as matrículas com nota entre 7 e 9.
+select id_matricula
+from matriculas
+where nota between 7 and 9;
+
+-- 9. Liste os alunos que possuem exatamente 20 anos.
+select nome
+from alunos
+where idade = 20;
+
+-- 10. Exiba os cursos com carga horária menor ou igual a 60 horas.
+select nome_curso
+from cursos
+where carga_horaria <= 60;
+
+
+-- QUESTÕES COM GROUP BY --
